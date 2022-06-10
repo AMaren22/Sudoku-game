@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="./Style/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Sudoku</h1>
+      <hr />
+    </header>
+
+    <main>
+      <div class="start-container" id="start-screen">
+        <div class="start-screen">
+          <input
+            type="text"
+            name="input-name"
+            id="input-name"
+            maxlength="11"
+            placeholder="Ingrese su nombre"
+          />
+          <div class="btn-level" id="btn-level">Facil</div>
+          <div class="new-game" id="new-game">Nuevo juego</div>
+        </div>
+      </div>
+
+      <div class="pause-container" id="screen-pause">
+        <div class="pause-screen">
+          <div id="btn-return">Volver al juego</div>
+          <div id="new_game">Nuevo Juego</div>
+        </div>
+      </div>
+
+      <div class="winGame-container" id="winGame-container">
+        <div class="winGame-screen">
+          <div class="results" id="results">
+            <h2>¡Felicitaciones!</h2>
+            <div class="win-time">
+              Tiempo:<span id="win-time">00:00:00</span>
+            </div>
+            <div class="win-mistakes">
+              Errores:<span id="win-mistakes">0</span>
+            </div>
+          </div>
+
+          <div class="new-game" id="new-game-win">Nuevo juego</div>
+        </div>
+      </div>
+
+      <div class="screen-game" id="screen-game">
+        <div class="game-container">
+          <div class="board" id="board">
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+          </div>
+          <div class="digits" id="digits">
+            <div class="tile-digits">1</div>
+            <div class="tile-digits">2</div>
+            <div class="tile-digits">3</div>
+            <div class="tile-digits">4</div>
+            <div class="tile-digits">5</div>
+            <div class="tile-digits">6</div>
+            <div class="tile-digits">7</div>
+            <div class="tile-digits">8</div>
+            <div class="tile-digits">9</div>
+            <div class="btn-remove" id="btn-remove">X</div>
+          </div>
+        </div>
+        <div class="addons-container">
+          <div class="addons">Jugador<span id="player-name"></span></div>
+          <div class="addons">Nivel<span id="level"></span></div>
+          <div class="addons">
+            Tiempo de juego<span id="time">00:00:00</span>
+          </div>
+          <div class="addons">
+            <div class="btn-pause" id="btn-pause">Pausa</div>
+          </div>
+          <div class="addons">Puntaje<span id="score">0</span></div>
+          <div class="addons">Errores<span id="mistake">0</span></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="developer">
+        <p>Desarrollado por: <span>Augusto Marengo</span></p>
+        <p>
+          Email:
+          <a
+            href="mailto:amarengo.dev@gmail.com?Subject=Quiero%20ponerme%20en%20contacto"
+            >amarengo.dev@gmail.com</a
+          >
+        </p>
+      </div>
+      <div class="social-media">
+        <a
+          href="https://www.linkedin.com/in/augusto-marengo-512657236/"
+          target="_blank"
+          ><img src="./img/logotipo-de-linkedin.png" alt="LinkedIN"
+        /></a>
+      </div>
+    </footer>
+
+    <script src="./Scripts/juego.js"></script>
+    <script src="./Scripts/engine.js"></script>
+  </body>
+</html>

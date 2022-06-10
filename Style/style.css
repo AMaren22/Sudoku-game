@@ -101,7 +101,10 @@ main {
     transform: scale(1.5) rotate(-45deg);
   }
 }
+.tile-board{
+  border: 2px solid #444;
 
+}
 .tile-selected {
   border: 2px solid #444;
 }

@@ -116,6 +116,7 @@ const tileSelect = () => {
         tiles.forEach((e) => e.classList.remove("tile-selected")); // esta linea elimina la casilla selecionada anteriormente para que solo aparezca una casilla marcada
         tile_select = index; // Esta linea lo que hace es guardar la posicion seleccionada para despues poder pasarle el numero en ese lugar.
         elements.classList.add("tile-selected");
+        removeTileBoard();
         tileBoard(index);
       }
     });
@@ -180,7 +181,7 @@ const checkErrors = (value) => {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       let tile = tiles[9 * (box_row + i) + (box_col + j)];
-      tile.classList.contains("tile-selected") && addErrors(tile);
+      !tile.classList.contains("tile-selected") && addErrors(tile);
     }
   }
 
@@ -227,40 +228,48 @@ const tileBoard = (index) => {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       let tile = tiles[9 * (box_row + i) + (box_col + j)];
-      tile.classList.add("tile-selected");
+      tile.classList.add("tile-board");
     }
   }
 
   let step = 9;
 
   while (index - step >= 0) {
-    tiles[index - step].classList.add("tile-selected");
+    tiles[index - step].classList.add("tile-board");
     step += 9;
   }
 
   step = 9;
 
   while (index + step < 81) {
-    tiles[index + step].classList.add("tile-selected");
+    tiles[index + step].classList.add("tile-board");
     step += 9;
   }
 
   step = 1;
 
   while (index - step >= 9 * row) {
-    tiles[index - step].classList.add("tile-selected");
+    tiles[index - step].classList.add("tile-board");
     step += 1;
   }
 
   step = 1;
 
   while (index + step < 9 * row + 9) {
-    tiles[index + step].classList.add("tile-selected");
+    tiles[index + step].classList.add("tile-board");
     step += 1;
   }
 };
 
+
 //-----------------------------------------------------------------
+
+//Eliminamos las ayudas anteriores
+const removeTileBoard = () =>{
+  tiles.forEach(element => element.classList.remove("tile-board"))
+}
+
+//----------------------------------------------------
 // Verifiacion si ganó el juego
 
 const wonGame = () => sudokuCheck(su_answer);

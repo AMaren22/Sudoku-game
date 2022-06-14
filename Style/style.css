@@ -101,12 +101,11 @@ main {
     transform: scale(1.5) rotate(-45deg);
   }
 }
-.tile-board{
-  border: 2px solid #444;
-
+.tile-board {
+  background-color: rgb(223, 223, 223);
 }
 .tile-selected {
-  border: 2px solid #444;
+  border: 2px solid black;
 }
 /* .tile-selected-black{
     border: 3px solid black;
@@ -343,11 +342,12 @@ footer .social-media a img {
 .winGame-screen .results h2 {
   font-family: "macondo";
   font-size: 6em;
+  text-align: center;
 }
 .winGame-screen .results div {
   margin-left: 20px;
   font-size: 3em;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 .winGame-screen .results div span {
   color: #444;
@@ -383,4 +383,75 @@ footer .social-media a img {
   font-weight: 700;
   border: 1px solid #444;
   cursor: pointer;
+}
+.leaderboard-container {
+  margin-top: 5px;
+  height: 83vh;
+  width: 100vw;
+  overflow-y: scroll;
+}
+.leaderboard-container .btn-back {
+  display: grid;
+  place-items: center;
+  margin: 10px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid black;
+  width: 100px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.leaderboard-screen {
+  display: flex;
+  height: 100%;
+  margin: 15px 50px;
+  font-size: 2em;
+}
+.leaderboard-screen .pos {
+  text-align: center;
+  width: 10%;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.leaderboard-screen .score-table {
+  text-align: center;
+  width: 40%;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.leaderboard-screen .mistakes-table {
+  text-align: center;
+  width: 10%;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.leaderboard-screen .name-table {
+  text-align: center;
+  width: 30%;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.leaderboard-screen .level-table {
+  text-align: center;
+  width: 15%;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard-screen span {
+  margin-top: 20px;
+  color: grey;
 }

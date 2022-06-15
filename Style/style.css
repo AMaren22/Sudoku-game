@@ -286,8 +286,9 @@ footer .social-media a img {
 .start-screen div {
   height: 50px;
   width: 60%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
   font-size: 1.2em;
   font-weight: 700;
@@ -454,4 +455,11 @@ footer .social-media a img {
 .leaderboard-screen span {
   margin-top: 20px;
   color: grey;
+}
+
+.btn-hints span{
+  margin-left: 10px;
+  font-weight: 800;
+  
+  
 }

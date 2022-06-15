@@ -25,6 +25,8 @@
           />
           <div class="btn-level" id="btn-level">Facil</div>
           <div class="new-game" id="new-game">Nuevo juego</div>
+          <div class="btn-leaderboard" id="btn-leaderboard">Tabla de posiciones</div>
+          <div class="btn-hints" id="btn-hints">Pistas:<span id="hints-screen">On</span></div>
         </div>
       </div>
 
@@ -61,12 +63,12 @@
         
         <div class="leaderboard-screen">
           
-            <div class="pos">Posición<span id="leaderboard-pos">0</span></div>
-            <div class="score-table">Puntuacion<span id="leaderboard-score">0</span></div>
-            <div class="mistakes-table">Errores<span id="leaderboard-mistakes">0</span></div>
+            <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
+            <div class="score-table" id="score-container">Puntuacion<span id="leaderboard-score"></span></div>
+            <div class="mistakes-table" id="mistake-container">Errores<span id="leaderboard-mistakes"></span></div>
 
-            <div class="name-table">Nombre<span id="leaderboard-name">0</span></div>
-            <div class="level-table">Nivel<span id="leaderboard-level">0</span></div>
+            <div class="name-table" id="name-container">Nombre<span id="leaderboard-name"></span></div>
+            <div class="level-table" id="level-container">Nivel<span id="leaderboard-level"></span></div>
           
         </div>
       </div>
@@ -204,6 +206,7 @@
       </div>
     </footer>
 
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./Scripts/juego.js"></script>
     <script src="./Scripts/engine.js"></script>
   </body>

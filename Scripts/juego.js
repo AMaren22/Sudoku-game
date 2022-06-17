@@ -102,6 +102,7 @@ function restartScreen() {
   removeTileBoard();
   removeBoard();
   removeErrors();
+  removeTable();
   clearInterval(timer);
   pause = false;
   seconds = 0;
@@ -185,8 +186,9 @@ const inputNumber = () => {
         }
         score_screen.innerHTML = systemScore();
         if (wonGame()) {
-          saveGameInfo();
           winGame();
+          saveGameInfo();
+          
         }
       }
     });
@@ -438,6 +440,7 @@ const winGame = () => {
 
   btn_win_new_game.addEventListener("click", () => {
     restartScreen();
+    
   });
 };
 
@@ -462,6 +465,23 @@ const removeBoard = () => {
 };
 
 //-------------------------------------
+
+// Eliminamos la tabla anterior
+
+const removeTable = () =>{
+let selectElement = document.querySelector(".leaderboard-screen");
+let reFill = ` <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
+<div class="score-table" id="score-container">Puntuacion<span id="leaderboard-score"></span></div>
+<div class="mistakes-table" id="mistake-container">Errores<span id="leaderboard-mistakes"></span></div>
+
+<div class="name-table" id="name-container">Nombre<span id="leaderboard-name"></span></div>
+<div class="level-table" id="level-container">Nivel<span id="leaderboard-level"></span></div>`;
+selectElement.innerHTML = reFill;
+}
+
+ 
+
+//------------------------------------
 
 //Iniciadno juego a traves del click en new_game
 

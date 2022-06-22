@@ -1,5 +1,4 @@
 // Declaraciones de constantes
-
 const screen_start = document.querySelector("#start-screen");
 const input_name = document.querySelector("#input-name");
 const new_game = document.querySelector("#new-game");
@@ -32,6 +31,9 @@ const btn_table = document.querySelector("#btn-leaderboard");
 const btn_back = document.querySelector("#btn-back");
 const btn_hints = document.querySelector("#btn-hints");
 const hints_screen = document.querySelector("#hints-screen");
+const btn_continue = document.querySelector("#btn-continue");
+const continue_screen = document.querySelector("#continue-screen");
+const btn_continue_new_game = document.querySelector("#btn_new_game");
 
 const VARIABLES = {
   nivel: ["Facil", "Medio", "Dificil", "Muy Dificil"],
@@ -53,6 +55,7 @@ const setScore = (score) => localStorage.setItem("info-score", score);
 const getScore = () => localStorage.getItem("info-score");
 const getInfoGame = () => JSON.parse(localStorage.getItem("Game-info"));
 const getContainer = () => JSON.parse(localStorage.getItem("info-container"));
+const getGame = () => JSON.parse(localStorage.getItem("game"));
 
 //----------------------------------------------------
 
@@ -70,10 +73,11 @@ let points = 0;
 let infoContainer = [];
 let info_game = {};
 let score = VARIABLES.puntaje[level_index];
-let realTime;
+let realTime = "00:00:00";
 let scoreUP = 0;
 let pista_index = 0;
 let pista = VARIABLES.pista[pista_index];
+
 
 //------------------------------------------------------
 
@@ -102,7 +106,6 @@ function restartScreen() {
   removeTileBoard();
   removeBoard();
   removeErrors();
-  removeTable();
   clearInterval(timer);
   pause = false;
   seconds = 0;
@@ -114,14 +117,19 @@ function restartScreen() {
 
   screen_win.classList.remove("active3");
   screen_pause.classList.remove("active3");
+  continue_screen.classList.remove("active3")
   game_screen.classList.remove("active");
   screen_start.classList.remove("active2");
+
 }
 //---------------------------------------
 
 const initSudoku = () => {
   su = genSudoku(nivel);
   su_answer = [...su.gameboard];
+  //saveGame();
+
+  
 
   // Mostrar numeros en tablero
   for (let i = 0; i < 81; i++) {
@@ -173,6 +181,7 @@ const inputNumber = () => {
 
         su_answer[row][col] = index + 1;
 
+        //saveGame();
         removeErrors();
         checkErrors(index + 1);
         if (
@@ -184,10 +193,12 @@ const inputNumber = () => {
         } else {
           points += 1;
         }
-        score_screen.innerHTML = systemScore();
+        totalScore = systemScore()
+        score_screen.innerHTML = totalScore ;
         if (wonGame()) {
           winGame();
           saveGameInfo();
+          //removeGame();
           
         }
       }
@@ -339,11 +350,98 @@ const saveGameInfo = () => {
 
 //----------------------------------------
 
+// Guardado de partida
+
+   /* const saveGame = () =>{
+  let game ={
+    level: level_index,
+    seconds: seconds,
+    mistakes: mistakes,
+    score: totalScore,
+    su:{
+      original: su.original,
+      gameboard: su.gameboard,
+      answer: su_answer
+    }
+  }
+  localStorage.setItem("game", JSON.stringify(game));
+}   */
+ 
+//-----------------------------------------
+
 // Carga de informacion
 
-const loadGameInfo = () => {};
+ /* const loadGame = () => {
+  let game = getGame();
 
+
+  su = game.su;
+  su_answer = su.answer;
+  seconds=game.seconds;
+  score= game.score;
+  mistakes = game.mistakes
+
+  time_display.innerHTML = time(seconds);
+  level_display.innerText = VARIABLES.nivel[level_index];
+  game_mistake.innerHTML = mistakes;
+  score_screen.innerHTML = score;
+
+  for (let i = 0; i < 81; i++) {
+    let row = Math.floor(i / 9);
+    let col = i % 9;
+
+    tiles[i].setAttribute("data-value", su.gameboard[row][col]);
+    tiles[i].innerHTML = su_answer[row][col] !==0 ? su_answer[row][col] : "";
+    if (su.gameboard[row][col] !== 0) {
+      tiles[i].classList.add("black-number");
+    }
+
+    if (col === 2 || col === 5) tiles[i].style.marginRight = "5px";
+    if (row === 2 || row === 5) tiles[i].style.marginBottom = "5px";
+  }
+
+
+
+
+
+
+
+
+}; */
+ 
 //----------------------
+
+// Garga de datos desde el JSON
+
+async function loadDB() 
+{
+  try{
+  const request = await fetch("./JSON/dataBase.json");
+  const data = await request.json();
+  infoContainer.push(...data);
+  localStorage.setItem("info-container", JSON.stringify(infoContainer));
+}
+  catch(e){
+    alert("algo salio mal...");
+    console.log(e);
+  }
+
+  
+}
+
+
+
+
+
+//-------------------------------------------
+
+// Remueve la partida guardada 
+
+/* const removeGame = () =>{
+  localStorage.removeItem("game");
+} */
+
+//-----------------------------------
 
 // Ordenar resultados para la table
 
@@ -469,14 +567,14 @@ const removeBoard = () => {
 // Eliminamos la tabla anterior
 
 const removeTable = () =>{
-let selectElement = document.querySelector(".leaderboard-screen");
-let reFill = ` <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
+  let selectElement = document.querySelector(".leaderboard-screen");
+  let reFill = ` <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
 <div class="score-table" id="score-container">Puntuacion<span id="leaderboard-score"></span></div>
 <div class="mistakes-table" id="mistake-container">Errores<span id="leaderboard-mistakes"></span></div>
 
 <div class="name-table" id="name-container">Nombre<span id="leaderboard-name"></span></div>
 <div class="level-table" id="level-container">Nivel<span id="leaderboard-level"></span></div>`;
-selectElement.innerHTML = reFill;
+  selectElement.innerHTML = reFill;
 }
 
  
@@ -492,8 +590,8 @@ new_game.addEventListener("click", () => {
       input_name.focus();
     }, 500);
   } else {
-    startGame();
     initSudoku();
+    startGame();
   }
 });
 //-----------------------------------------------
@@ -508,8 +606,8 @@ input_name.addEventListener("keydown", (e) => {
         input_name.focus();
       }, 500);
     } else {
-      startGame();
       initSudoku();
+      startGame();
     }
   }
 });
@@ -585,6 +683,7 @@ btn_remove.addEventListener("click", () => {
 // Botón screen game - posiciones
 btn_table.addEventListener("click", () => {
   screen_start.classList.add("active2");
+  removeTable();
   showResult();
   table_screen.classList.remove("active2");
 });
@@ -611,10 +710,68 @@ btn_hints.addEventListener("click", () => {
 
 //------------------------------------
 
-inputNumber();
-tileSelect();
-getPlayerName() ? (input_name.value = getPlayerName()) : input_name.focus();
-getInfoGame() && (info_game = getContainer());
-getContainer() && (infoContainer = getContainer());
+// Botón continuar juego
+
+/* btn_continue.addEventListener("click", () =>{
+  continue_screen.classList.remove("active3");
+  loadGame();
+  startGame();
+
+}) */
+
+//--------------------
+
+// Botón nuevo juego menu de continuar
+
+/* btn_continue_new_game.addEventListener("click", () =>{
+  Swal.fire({
+    title: "Esta seguro que desea salir?",
+    text: "Perderá todo el progreso",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, salir",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      restartScreen();
+    }
+  });
+
+}) */
+
+//---------------------------------
+
+const init = () =>{
+  window.addEventListener('load', () => {
+    infoContainer == "" &&loadDB();
+  });
+
+ /*  const game = getGame();
+
+  if(game){
+    continue_screen.classList.add("active3");
+    screen_start.classList.add("active2");
+  }
+  else{
+    continue_screen.classList.remove("active3");
+    screen_start.classList.remove("active2");
+
+  } */
+  
+  inputNumber();
+  tileSelect();
+  getPlayerName() ? (input_name.value = getPlayerName()) : input_name.focus();
+  getInfoGame() && (info_game = getContainer());
+  getContainer() && (infoContainer = getContainer());
+
+}
+
+init();
+
+
+
+
+ 
 
 //----------------------------------------------------

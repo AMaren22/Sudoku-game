@@ -4,14 +4,14 @@
         "timeGame": "00:01:00",
         "mistakesGame": 0,
         "scoreGame": 8300,
-        "levelGame": "Facil"
+        "levelGame": 0
     },
     {
         "nameGame":"Player IA",
         "timeGame": "00:01:40",
         "mistakesGame": 0,
         "scoreGame": 16000,
-        "levelGame": "Medio"
+        "levelGame": 1
 
     },
     {
@@ -19,7 +19,7 @@
         "timeGame": "00:02:20",
         "mistakesGame": 0,
         "scoreGame": 28500,
-        "levelGame": "Dificil"
+        "levelGame": 2
 
     },
     {
@@ -27,7 +27,7 @@
         "timeGame": "00:04:00",
         "mistakesGame": 0,
         "scoreGame": 46800,
-        "levelGame": "Muy dificil"
+        "levelGame": 3
 
     }
 ]

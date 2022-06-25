@@ -37,6 +37,7 @@ const btn_continue_new_game = document.querySelector("#btn_new_game");
 
 const VARIABLES = {
   nivel: ["Facil", "Medio", "Dificil", "Muy Dificil"],
+  level: ["Easy", "Medium", "Hard", "Very Hard"],
   nivel_index: [29, 38, 47, 56],
   puntaje: [1.5, 2.5, 4, 6],
   numeros_posibles: [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -70,6 +71,7 @@ let su_answer = undefined;
 let tile_select = 0;
 let mistakes = 0;
 let points = 0;
+let scoreValue = 0;
 let infoContainer = [];
 let info_game = {};
 let score = VARIABLES.puntaje[level_index];
@@ -77,8 +79,12 @@ let realTime = "00:00:00";
 let scoreUP = 0;
 let pista_index = 0;
 let pista = VARIABLES.pista[pista_index];
+let laguange = document.URL; // Trabajamos con document.URL y no con windows.location porqeu este ultimo nos devuelve un objeto
+let isSpanish = laguange.includes("index");
 
 
+
+ 
 //------------------------------------------------------
 
 function startGame() {
@@ -87,7 +93,9 @@ function startGame() {
 
   player_name.innerHTML = input_name.value.trim(); // Muestra el nombre en la pantalla
   setPlayerName(input_name.value.trim());
-  level_display.innerText = VARIABLES.nivel[level_index]; //Muestra el nivel seleccionado en la pantalla
+//Muestra el nivel seleccionado en la pantalla
+  isSpanish ? level_display.innerText = VARIABLES.nivel[level_index] : level_display.innerText = VARIABLES.level[level_index] ;
+  
 
   // Reloj
   time(seconds);
@@ -112,8 +120,10 @@ function restartScreen() {
   mistakes = 0;
   points = 0;
   scoreUP = 0;
+  scoreValue = 0;
   game_mistake.innerHTML = mistakes;
   time_display.innerHTML = time(seconds);
+  score_screen.innerHTML = scoreValue;
 
   screen_win.classList.remove("active3");
   screen_pause.classList.remove("active3");
@@ -127,7 +137,7 @@ function restartScreen() {
 const initSudoku = () => {
   su = genSudoku(nivel);
   su_answer = [...su.gameboard];
-  //saveGame();
+  saveGame();
 
   
 
@@ -181,7 +191,6 @@ const inputNumber = () => {
 
         su_answer[row][col] = index + 1;
 
-        //saveGame();
         removeErrors();
         checkErrors(index + 1);
         if (
@@ -193,12 +202,17 @@ const inputNumber = () => {
         } else {
           points += 1;
         }
-        totalScore = systemScore()
-        score_screen.innerHTML = totalScore ;
+       
+        systemScore();
+        
+        score_screen.innerHTML = scoreValue;
+        
+        saveGame();
+        
         if (wonGame()) {
           winGame();
           saveGameInfo();
-          //removeGame();
+          removeGame();
           
         }
       }
@@ -338,7 +352,7 @@ const saveGameInfo = () => {
     timeGame: getTime(),
     mistakesGame: getMistakes(),
     scoreGame: getScore(),
-    levelGame: VARIABLES.nivel[level_index],
+    levelGame: level_index,
   };
 
   localStorage.setItem("Game-info", JSON.stringify(info_game));
@@ -352,12 +366,13 @@ const saveGameInfo = () => {
 
 // Guardado de partida
 
-   /* const saveGame = () =>{
+    const saveGame = () =>{
   let game ={
     level: level_index,
     seconds: seconds,
     mistakes: mistakes,
-    score: totalScore,
+    score2: setScore(scoreValue),
+    scoreUP: scoreUP,
     su:{
       original: su.original,
       gameboard: su.gameboard,
@@ -365,26 +380,34 @@ const saveGameInfo = () => {
     }
   }
   localStorage.setItem("game", JSON.stringify(game));
-}   */
+
+  
+}   
  
 //-----------------------------------------
 
 // Carga de informacion
 
- /* const loadGame = () => {
+  const loadGame = () => {
   let game = getGame();
 
 
   su = game.su;
   su_answer = su.answer;
-  seconds=game.seconds;
-  score= game.score;
+  seconds= game.seconds;
   mistakes = game.mistakes
+  scoreValue = getScore();
+  scoreUP= game.scoreUP;
 
   time_display.innerHTML = time(seconds);
   level_display.innerText = VARIABLES.nivel[level_index];
   game_mistake.innerHTML = mistakes;
-  score_screen.innerHTML = score;
+  score_screen.innerHTML = scoreValue;
+
+ 
+  
+
+ 
 
   for (let i = 0; i < 81; i++) {
     let row = Math.floor(i / 9);
@@ -401,13 +424,7 @@ const saveGameInfo = () => {
   }
 
 
-
-
-
-
-
-
-}; */
+}; 
  
 //----------------------
 
@@ -416,7 +433,8 @@ const saveGameInfo = () => {
 async function loadDB() 
 {
   try{
-  const request = await fetch("./JSON/dataBase.json");
+  let request;
+  isSpanish ? request = await fetch("./JSON/dataBase.json") : request = await fetch("../JSON/dataBase.json");
   const data = await request.json();
   infoContainer.push(...data);
   localStorage.setItem("info-container", JSON.stringify(infoContainer));
@@ -429,17 +447,13 @@ async function loadDB()
   
 }
 
-
-
-
-
 //-------------------------------------------
 
 // Remueve la partida guardada 
 
-/* const removeGame = () =>{
+ const removeGame = () =>{
   localStorage.removeItem("game");
-} */
+} 
 
 //-----------------------------------
 
@@ -480,7 +494,7 @@ const showResult = () => {
     mistake.innerHTML = e.mistakesGame;
     document.getElementById("mistake-container").appendChild(mistake);
     let level = document.createElement("span");
-    level.innerHTML = e.levelGame;
+    isSpanish ? (level.innerHTML = VARIABLES.nivel[e.levelGame]) : (level.innerHTML = VARIABLES.level[e.levelGame])
     document.getElementById("level-container").appendChild(level);
   });
 };
@@ -512,9 +526,12 @@ const systemScore = () => {
     scoreUP = scoreUP + up;
   }
 
-  let scoreGen = scoreUP - down;
+  scoreValue = scoreUP - down;
 
-  return scoreGen;
+
+  
+
+  return scoreValue;
 };
 
 //----------------------------------
@@ -529,7 +546,7 @@ const winGame = () => {
 
   win_time.innerHTML = time(seconds);
   win_mistakes.innerHTML = mistakes;
-  let scoreValue = systemScore();
+  //scoreValue = systemScore();
   win_score.innerHTML = scoreValue;
   setScore(scoreValue);
   setMistakes(mistakes);
@@ -568,12 +585,22 @@ const removeBoard = () => {
 
 const removeTable = () =>{
   let selectElement = document.querySelector(".leaderboard-screen");
-  let reFill = ` <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
+  let reFill;
+  if(isSpanish){
+  reFill = ` <div class="pos" id="pos-container">Posición<span id="leaderboard-pos"></span></div>
 <div class="score-table" id="score-container">Puntuacion<span id="leaderboard-score"></span></div>
 <div class="mistakes-table" id="mistake-container">Errores<span id="leaderboard-mistakes"></span></div>
 
 <div class="name-table" id="name-container">Nombre<span id="leaderboard-name"></span></div>
 <div class="level-table" id="level-container">Nivel<span id="leaderboard-level"></span></div>`;
+}else{
+  reFill = ` <div class="pos" id="pos-container">Position<span id="leaderboard-pos"></span></div>
+<div class="score-table" id="score-container">Score<span id="leaderboard-score"></span></div>
+<div class="mistakes-table" id="mistake-container">Mistakes<span id="leaderboard-mistakes"></span></div>
+
+<div class="name-table" id="name-container">Player Name<span id="leaderboard-name"></span></div>
+<div class="level-table" id="level-container">Level<span id="leaderboard-level"></span></div>`;
+}
   selectElement.innerHTML = reFill;
 }
 
@@ -616,17 +643,20 @@ input_name.addEventListener("keydown", (e) => {
 
 //Botón selector de niveles
 
-btn_level.addEventListener("click", (e) => {
+ btn_level.addEventListener("click", (e) => {
   level_index + 1 > VARIABLES.nivel_index.length - 1
     ? (level_index = 0)
     : (level_index = level_index + 1);
 
   nivel = VARIABLES.nivel_index[level_index];
   score = VARIABLES.puntaje[level_index];
-  e.target.innerHTML = VARIABLES.nivel[level_index];
+  isSpanish ? e.target.innerHTML = VARIABLES.nivel[level_index] : e.target.innerHTML = VARIABLES.level[level_index];
+
 });
 
 //----------------------------------------
+
+
 
 // Boton de Pausa
 
@@ -647,6 +677,7 @@ btn_resume.addEventListener("click", () => {
 //Boton Nuevo juego en menu de pausa
 
 btn_pause_new_game.addEventListener("click", () => {
+  if(isSpanish){
   Swal.fire({
     title: "Esta seguro que desea salir?",
     text: "Perderá todo el progreso",
@@ -657,9 +688,28 @@ btn_pause_new_game.addEventListener("click", () => {
     confirmButtonText: "Sí, salir",
   }).then((result) => {
     if (result.isConfirmed) {
+      removeGame();
       restartScreen();
     }
   });
+  }else{
+    
+      Swal.fire({
+        title: "Are you sure you want to leave?",
+        text: "You will lose all progress",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, quit",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          removeGame();
+          restartScreen();
+        }
+      });
+
+    }
 });
 
 //-----------------------------------------------
@@ -712,18 +762,19 @@ btn_hints.addEventListener("click", () => {
 
 // Botón continuar juego
 
-/* btn_continue.addEventListener("click", () =>{
+ btn_continue.addEventListener("click", () =>{
   continue_screen.classList.remove("active3");
   loadGame();
   startGame();
 
-}) */
+}) 
 
 //--------------------
 
 // Botón nuevo juego menu de continuar
 
-/* btn_continue_new_game.addEventListener("click", () =>{
+ btn_continue_new_game.addEventListener("click", () =>{
+  if(isSpanish){
   Swal.fire({
     title: "Esta seguro que desea salir?",
     text: "Perderá todo el progreso",
@@ -734,20 +785,39 @@ btn_hints.addEventListener("click", () => {
     confirmButtonText: "Sí, salir",
   }).then((result) => {
     if (result.isConfirmed) {
+      removeGame();
       restartScreen();
     }
   });
+  }else{
+    
+      Swal.fire({
+        title: "Are you sure you want to leave?",
+        text: "You will lose all progress",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, quit",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          removeGame();
+          restartScreen();
+        }
+      });
 
-}) */
+    }
+
+}) 
 
 //---------------------------------
 
 const init = () =>{
   window.addEventListener('load', () => {
-    infoContainer == "" &&loadDB();
+    infoContainer == "" && loadDB();
   });
 
- /*  const game = getGame();
+   const game = getGame();
 
   if(game){
     continue_screen.classList.add("active3");
@@ -757,7 +827,9 @@ const init = () =>{
     continue_screen.classList.remove("active3");
     screen_start.classList.remove("active2");
 
-  } */
+  } 
+
+  
   
   inputNumber();
   tileSelect();
@@ -772,6 +844,5 @@ init();
 
 
 
- 
 
 //----------------------------------------------------

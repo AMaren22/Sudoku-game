@@ -1,39 +1,39 @@
 // Declaraciones de constantes
-const screen_start = document.querySelector("#start-screen");
-const input_name = document.querySelector("#input-name");
-const new_game = document.querySelector("#new-game");
-const game_screen = document.querySelector("#screen-game");
-const player_name = document.querySelector("#player-name");
-const btn_level = document.querySelector("#btn-level");
-const level_display = document.querySelector("#level");
-const time_display = document.querySelector("#time");
-const btn_pause = document.querySelector("#btn-pause");
-const screen_pause = document.querySelector("#screen-pause");
-const btn_resume = document.querySelector("#btn-return");
-const btn_pause_new_game = document.querySelector("#new_game");
-const tiles = document.querySelectorAll(".tile");
-const numbers_inputs = document.querySelectorAll(".tile-digits");
-const btn_remove = document.querySelector("#btn-remove");
-const screen_win = document.querySelector("#winGame-container");
-const btn_win_new_game = document.querySelector("#new-game-win");
-const win_time = document.querySelector("#win-time");
-const win_mistakes = document.querySelector("#win-mistakes");
-const win_score = document.querySelector("#win-score");
-const game_mistake = document.querySelector("#mistake");
-const score_screen = document.querySelector("#score");
-const table_screen = document.querySelector("#leaderboard-container");
-const show_name = document.querySelector("#leaderboard-name");
-const show_pos = document.querySelector("#leaderboard-pos");
-const show_score = document.querySelector("#leaderboard-score");
-const show_mistakes = document.querySelector("#leaderboard-mistakes");
-const show_level = document.querySelector("#leaderboard-level");
-const btn_table = document.querySelector("#btn-leaderboard");
-const btn_back = document.querySelector("#btn-back");
-const btn_hints = document.querySelector("#btn-hints");
-const hints_screen = document.querySelector("#hints-screen");
-const btn_continue = document.querySelector("#btn-continue");
-const continue_screen = document.querySelector("#continue-screen");
-const btn_continue_new_game = document.querySelector("#btn_new_game");
+const screen_start = document.querySelector("#start-screen"),
+      input_name = document.querySelector("#input-name"),
+      new_game = document.querySelector("#new-game"),
+      game_screen = document.querySelector("#screen-game"),
+      player_name = document.querySelector("#player-name"),
+      btn_level = document.querySelector("#btn-level"),
+      level_display = document.querySelector("#level"),
+      time_display = document.querySelector("#time"),
+      btn_pause = document.querySelector("#btn-pause"),
+      screen_pause = document.querySelector("#screen-pause"),
+      btn_resume = document.querySelector("#btn-return"),
+      btn_pause_new_game = document.querySelector("#new_game"),
+      tiles = document.querySelectorAll(".tile"),
+      numbers_inputs = document.querySelectorAll(".tile-digits"),
+      btn_remove = document.querySelector("#btn-remove"),
+      screen_win = document.querySelector("#winGame-container"),
+      btn_win_new_game = document.querySelector("#new-game-win"),
+      win_time = document.querySelector("#win-time"),
+      win_mistakes = document.querySelector("#win-mistakes"),
+      win_score = document.querySelector("#win-score"),
+      game_mistake = document.querySelector("#mistake"),
+      score_screen = document.querySelector("#score"),
+      table_screen = document.querySelector("#leaderboard-container"),
+      show_name = document.querySelector("#leaderboard-name"),
+      show_pos = document.querySelector("#leaderboard-pos"),
+      show_score = document.querySelector("#leaderboard-score"),
+      show_mistakes = document.querySelector("#leaderboard-mistakes"),
+      show_level = document.querySelector("#leaderboard-level"),
+      btn_table = document.querySelector("#btn-leaderboard"),
+      btn_back = document.querySelector("#btn-back"),
+      btn_hints = document.querySelector("#btn-hints"),
+      hints_screen = document.querySelector("#hints-screen"),
+      btn_continue = document.querySelector("#btn-continue"),
+      continue_screen = document.querySelector("#continue-screen"),
+      btn_continue_new_game = document.querySelector("#btn_new_game");
 
 const VARIABLES = {
   nivel: ["Facil", "Medio", "Dificil", "Muy Dificil"],
@@ -44,43 +44,42 @@ const VARIABLES = {
   pista: ["On", "Off"],
 };
 
-const time = (seconds) => new Date(seconds * 1000).toISOString().slice(11, 19);
-const setPlayerName = (name) => localStorage.setItem("player-name", name);
-const getPlayerName = () => localStorage.getItem("player-name");
-const setTime = (time) => localStorage.setItem("time-info", time);
-const getTime = () => localStorage.getItem("time-info");
-const setMistakes = (mistakes) =>
-  localStorage.setItem("info-mistakes", mistakes);
-const getMistakes = () => localStorage.getItem("info-mistakes");
-const setScore = (score) => localStorage.setItem("info-score", score);
-const getScore = () => localStorage.getItem("info-score");
-const getInfoGame = () => JSON.parse(localStorage.getItem("Game-info"));
-const getContainer = () => JSON.parse(localStorage.getItem("info-container"));
-const getGame = () => JSON.parse(localStorage.getItem("game"));
+const time = (seconds) => new Date(seconds * 1000).toISOString().slice(11, 19),
+      setPlayerName = (name) => localStorage.setItem("player-name", name),
+      getPlayerName = () => localStorage.getItem("player-name"),
+      setTime = (time) => localStorage.setItem("time-info", time),
+      getTime = () => localStorage.getItem("time-info"),
+      setMistakes = (mistakes) => localStorage.setItem("info-mistakes", mistakes),
+      getMistakes = () => localStorage.getItem("info-mistakes"),
+      setScore = (score) => localStorage.setItem("info-score", score),
+      getScore = () => localStorage.getItem("info-score"),
+      getInfoGame = () => JSON.parse(localStorage.getItem("Game-info")),
+      getContainer = () => JSON.parse(localStorage.getItem("info-container")),
+      getGame = () => JSON.parse(localStorage.getItem("game"));
 
 //----------------------------------------------------
 
 //Declaraciones de variables globales
-let seconds = 0;
-let pause = false;
-let level_index = 0;
-let nivel = VARIABLES.nivel_index[level_index];
-let timer = null;
-let su = undefined;
-let su_answer = undefined;
-let tile_select = 0;
-let mistakes = 0;
-let points = 0;
-let scoreValue = 0;
-let infoContainer = [];
-let info_game = {};
-let score = VARIABLES.puntaje[level_index];
-let realTime = "00:00:00";
-let scoreUP = 0;
-let pista_index = 0;
-let pista = VARIABLES.pista[pista_index];
-let laguange = document.URL; // Trabajamos con document.URL y no con windows.location porqeu este ultimo nos devuelve un objeto
-let isSpanish = laguange.includes("index");
+let seconds = 0,
+    pause = false,
+    level_index = 0,
+    nivel = VARIABLES.nivel_index[level_index],
+    timer = null,
+    su = undefined,
+    su_answer = undefined,
+    tile_select = 0,
+    mistakes = 0,
+    points = 0,
+    scoreValue = 0,
+    infoContainer = [],
+    info_game = {},
+    score = VARIABLES.puntaje[level_index],
+    realTime = "00:00:00",
+    scoreUP = 0,
+    pista_index = 0,
+    pista = VARIABLES.pista[pista_index],
+    laguange = document.URL, // Trabajamos con document.URL y no con windows.location porqeu este ultimo nos devuelve un objeto
+    isSpanish = laguange.includes("index");
 
 
 
@@ -437,7 +436,8 @@ async function loadDB()
   isSpanish ? request = await fetch("./JSON/dataBase.json") : request = await fetch("../JSON/dataBase.json");
   const data = await request.json();
   infoContainer.push(...data);
-  localStorage.setItem("info-container", JSON.stringify(infoContainer));
+  localStorage.setItem("info-container", JSON.stringify(infoContainer)); 
+
 }
   catch(e){
     alert("algo salio mal...");
